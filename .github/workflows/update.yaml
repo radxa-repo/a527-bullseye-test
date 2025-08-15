@@ -18,12 +18,12 @@ jobs:
               core.setFailed('Required secrets are unset!');
           }
     - name: "Checkout rsdk"
-      uses: "actions/checkout@v4"
+      uses: "actions/checkout@v5"
       with:
-        ref: "12869e7f61dc37ea088bf049957c1885693a6a0d"
+        ref: "9e2545ffa9a1040477c9a247a4307b497dba182c"
         repository: "RadxaOS-SDK/rsdk"
     - name: "Checkout current repo"
-      uses: "actions/checkout@v4"
+      uses: "actions/checkout@v5"
       with:
         path: ".infra-repo"
         token: "${{secrets.GIT_PUSH_TOKEN}}"
@@ -49,7 +49,8 @@ jobs:
         fi
         popd
       shell: "bash"
-    - name: "Commit package snapshot"
+    - if: "github.event_name != 'pull_request'"
+      name: "Commit package snapshot"
       run: |
         pushd .infra-repo
         git push
@@ -57,6 +58,9 @@ jobs:
       shell: "bash"
 name: "Update package version info"
 "on":
+  pull_request:
+    paths:
+    - ".github/workflows/update.yaml"
   repository_dispatch:
     types:
     - "new_package_release"

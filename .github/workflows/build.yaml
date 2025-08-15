@@ -10,12 +10,12 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
     - name: "Checkout rsdk"
-      uses: "actions/checkout@v4"
+      uses: "actions/checkout@v5"
       with:
-        ref: "12869e7f61dc37ea088bf049957c1885693a6a0d"
+        ref: "9e2545ffa9a1040477c9a247a4307b497dba182c"
         repository: "RadxaOS-SDK/rsdk"
     - name: "Checkout current repo"
-      uses: "actions/checkout@v4"
+      uses: "actions/checkout@v5"
       with:
         path: ".infra-repo"
     - env:
@@ -62,10 +62,10 @@ jobs:
         export RSDK_REPO_ORIGIN="${suites[0]}"
         
         pushd "$HOME/.aptly/public/$RSDK_REPO_ORIGIN/"
-            cp "$OLDPWD/pkgs.json" ./
+            cp "$OLDPWD/pkgs.json" "$OLDPWD/install.sh" ./
             pandoc --from gfm --to html --standalone "$OLDPWD/README.md" --output index.html
             find . > files.list
-            echo "pages=$(realpath .)" >> $GITHUB_OUTPUT
+            echo "pages=$(realpath .)" | tee -a $GITHUB_OUTPUT
         popd
         
         popd
@@ -81,7 +81,7 @@ jobs:
       name: "Deploy to GitHub Pages"
       uses: "actions/deploy-pages@v4"
     - name: "Download Pages artifact"
-      uses: "actions/download-artifact@v4"
+      uses: "actions/download-artifact@v5"
       with:
         name: "github-pages"
     - if: "steps.deploy.outcome == 'success'"
@@ -101,11 +101,13 @@ name: "Publish packages"
     paths:
     - "pkgs.json"
     - "pkgs.lock"
+    - ".github/workflows/build.yaml"
   push:
     branches:
     - "main"
     paths:
     - "pkgs.json"
     - "pkgs.lock"
+    - ".github/workflows/build.yaml"
   workflow_dispatch: {}
 permissions: {}
