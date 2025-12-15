@@ -10,12 +10,12 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
     - name: "Checkout rsdk"
-      uses: "actions/checkout@v5"
+      uses: "actions/checkout@v6"
       with:
-        ref: "9e2545ffa9a1040477c9a247a4307b497dba182c"
+        ref: "cd0cc101dd21b8c9e3e683479e888492a258b780"
         repository: "RadxaOS-SDK/rsdk"
     - name: "Checkout current repo"
-      uses: "actions/checkout@v5"
+      uses: "actions/checkout@v6"
       with:
         path: ".infra-repo"
     - env:
@@ -73,7 +73,7 @@ jobs:
     - name: "Setup GitHub Pages"
       uses: "actions/configure-pages@v5"
     - name: "Upload artifact"
-      uses: "actions/upload-pages-artifact@v3"
+      uses: "actions/upload-pages-artifact@v4"
       with:
         path: "${{ steps.build.outputs.pages }}"
     - id: "deploy"
@@ -81,7 +81,7 @@ jobs:
       name: "Deploy to GitHub Pages"
       uses: "actions/deploy-pages@v4"
     - name: "Download Pages artifact"
-      uses: "actions/download-artifact@v5"
+      uses: "actions/download-artifact@v7"
       with:
         name: "github-pages"
     - if: "steps.deploy.outcome == 'success'"
