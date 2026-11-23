@@ -1,5 +1,6 @@
 {
   "allwinner-prebuilt": "1.4.6-3",
   "allwinner-prebuilt-extra": "0.1.9",
+  "aw-drivers-dkms": "0.1.0-3",
   "radxa-overlays": "0.2.18"
 }
